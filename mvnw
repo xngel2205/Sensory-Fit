@@ -1,7 +1,6 @@
 set -euf
 [ "${MVNW_VERBOSE-}" != debug ] || set -x
 
-# OS specific support.
 native_path() { printf %s\\n "$1"; }
 case "$(uname)" in
 CYGWIN* | MINGW*)
@@ -44,7 +43,6 @@ set_java_home() {
   fi
 }
 
-# hash string like Java String::hashCode
 hash_string() {
   str="${1:-}" h=0
   while [ -n "$str" ]; do
