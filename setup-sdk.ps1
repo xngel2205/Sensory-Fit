@@ -1,21 +1,7 @@
-<#
-  setup-sdk.ps1
-  -------------------------------------------------------------------------
-  Configura el SDK U.are.U en el proyecto tras instalarlo:
-    1. Localiza dpuareu.jar en el equipo.
-    2. Lo copia a lib\dpuareu.jar (que es donde apunta el pom.xml).
-    3. Detecta la carpeta de DLLs nativas (para java.library.path).
-    4. Compila el proyecto con el Maven de NetBeans para verificar.
-
-  Uso (desde la carpeta del proyecto):
-    powershell -ExecutionPolicy Bypass -File .\setup-sdk.ps1
-#>
-
 $ErrorActionPreference = 'Stop'
 $proj = $PSScriptRoot
 Write-Host "== Configuración del SDK U.are.U ==" -ForegroundColor Cyan
 
-# 1) Localizar dpuareu.jar -------------------------------------------------
 Write-Host "Buscando dpuareu.jar..." -ForegroundColor Yellow
 $roots = @(
   "C:\Program Files\DigitalPersona",
@@ -42,14 +28,12 @@ if (-not $jar) {
 }
 Write-Host "Encontrado: $jar" -ForegroundColor Green
 
-# 2) Copiar a lib\ ---------------------------------------------------------
 $libDir = Join-Path $proj "lib"
 if (-not (Test-Path $libDir)) { New-Item -ItemType Directory -Path $libDir | Out-Null }
 Copy-Item -Path $jar -Destination (Join-Path $libDir "dpuareu.jar") -Force
 Write-Host "Copiado a lib\dpuareu.jar" -ForegroundColor Green
 
-# 3) Detectar DLLs nativas -------------------------------------------------
-$sdkRoot = Split-Path (Split-Path (Split-Path $jar))   # ...\U.are.U SDK
+$sdkRoot = Split-Path (Split-Path (Split-Path $jar))
 $nativeDir = $null
 $dll = Get-ChildItem -Path $sdkRoot -Recurse -Filter "dpuareu.dll" -File -ErrorAction SilentlyContinue |
        Select-Object -First 1 -ExpandProperty FullName
@@ -61,7 +45,6 @@ if ($nativeDir) {
   Write-Host "No se localizaron las DLLs nativas automáticamente (revisa la carpeta Bin del SDK)." -ForegroundColor Yellow
 }
 
-# 4) Compilar para verificar ----------------------------------------------
 $jdk = "C:\Program Files\Java\jdk-17"
 $mvn = "C:\Program Files\NetBeans-25\netbeans\java\maven\bin\mvn.cmd"
 if (Test-Path $jdk) { $env:JAVA_HOME = $jdk }
