@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://www.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.unicesar</groupId>
+    <artifactId>ProyectoGym</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>17</maven.compiler.release>
+        <exec.mainClass>com.unicesar.proyectogym.ProyectoGym</exec.mainClass>
+        <lombok.version>1.18.38</lombok.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--
+            SDK DigitalPersona One Touch for Windows (lector U.are.U 4500).
+            Estos jars NO están en Maven Central: se instalan con el SDK de
+            DigitalPersona One Touch y se registran en el repo local con:
+
+              mvn install:install-file -Dfile="C:\Program Files\DigitalPersona\Bin\Java\dpotapi.jar" ^
+                  -DgroupId=com.digitalpersona -DartifactId=onetouch-api ^
+                  -Dversion=4.5.0 -Dpackaging=jar
+
+              mvn install:install-file -Dfile="C:\Program Files\DigitalPersona\Bin\Java\dpotjni.jar" ^
+                  -DgroupId=com.digitalpersona -DartifactId=onetouch-jni ^
+                  -Dversion=4.5.0 -Dpackaging=jar
+
+            Las DLLs nativas (DPFPApi.dll, etc.) están en System32 y se cargan
+            automáticamente por la JVM sin necesidad de -Djava.library.path.
+        -->
+        <dependency>
+            <groupId>com.digitalpersona</groupId>
+            <artifactId>onetouch-api</artifactId>
+            <version>4.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.digitalpersona</groupId>
+            <artifactId>onetouch-jni</artifactId>
+            <version>4.5.0</version>
+        </dependency>
+
+        <!-- Generación de reportes PDF (módulo de progreso físico). -->
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>1.3.32</version>
+        </dependency>
+
+        <!-- Gráficos de evolución (peso, IMC, grasa, masa muscular). -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.19</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
+                <configuration>
+                    <release>17</release>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <!-- Permite ejecutar la aplicación con: mvn exec:java -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <mainClass>${exec.mainClass}</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

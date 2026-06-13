@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Acciones de NetBeans para el proyecto ProyectoGym.
+
+    Define cómo el IDE ejecuta/depura la aplicación con Maven. Es necesario
+    porque la app usa librerías nativas (JNI) del SDK U.are.U: aquí se fija
+    la clase principal y la ruta de las DLLs (java.library.path).
+
+    Si tu JVM fuera de 32 bits, cambia "...\Lib\x64" por "...\Lib\win32".
+--><actions>
+
+    <!-- Ejecutar el proyecto (botón verde / F6) -->
+    <action>
+        <actionName>run</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>org.codehaus.mojo:exec-maven-plugin:3.5.0:exec</goal>
+        </goals>
+        <properties>
+            <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
+            <exec.executable>java</exec.executable>
+            <exec.workingdir>${project.basedir}</exec.workingdir>
+            <exec.mainClass>com.unicesar.proyectogym.ProyectoGym</exec.mainClass>
+            <exec.vmArgs>-Djava.library.path="C:\Program Files\DigitalPersona\Bin"</exec.vmArgs>
+            <exec.appArgs></exec.appArgs>
+        </properties>
+    </action>
+
+    <!-- Depurar el proyecto (Ctrl+F5) -->
+    <action>
+        <actionName>debug</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>org.codehaus.mojo:exec-maven-plugin:3.5.0:exec</goal>
+        </goals>
+        <properties>
+            <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
+            <exec.executable>java</exec.executable>
+            <exec.workingdir>${project.basedir}</exec.workingdir>
+            <jpda.listen>true</jpda.listen>
+            <exec.mainClass>com.unicesar.proyectogym.ProyectoGym</exec.mainClass>
+            <exec.vmArgs>-Djava.library.path="C:\Program Files\DigitalPersona\Bin" -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
+            <exec.appArgs></exec.appArgs>
+        </properties>
+    </action>
+
+    <!-- Perfilar el proyecto -->
+    <action>
+        <actionName>profile</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>org.codehaus.mojo:exec-maven-plugin:3.5.0:exec</goal>
+        </goals>
+        <properties>
+            <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
+            <exec.executable>java</exec.executable>
+            <exec.workingdir>${project.basedir}</exec.workingdir>
+            <exec.mainClass>com.unicesar.proyectogym.ProyectoGym</exec.mainClass>
+            <exec.vmArgs>-Djava.library.path="C:\Program Files\DigitalPersona\Bin"</exec.vmArgs>
+            <exec.appArgs></exec.appArgs>
+        </properties>
+    </action>
+
+</actions>
